@@ -52,6 +52,14 @@ func TestCompileQuery(t *testing.T) {
 			T: `SELECT @name := "name", @p1, @p2, @p3`,
 			V: []string{"age", "first", "last"},
 		},
+		{
+			Q: `SELECT * FROM person WHERE :flag=1`,
+			R: `SELECT * FROM person WHERE ?=1`,
+			D: `SELECT * FROM person WHERE $1=1`,
+			T: `SELECT * FROM person WHERE @p1=1`,
+			N: `SELECT * FROM person WHERE :flag=1`,
+			V: []string{"flag"},
+		},
 		/* This unicode awareness test sadly fails, because of our byte-wise worldview.
 		 * We could certainly iterate by Rune instead, though it's a great deal slower,
 		 * it's probably the RightWay(tm)
